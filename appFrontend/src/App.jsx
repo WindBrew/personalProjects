@@ -7,7 +7,7 @@ import '@fontsource/nunito'
 import Selection from './components/selectionPage'
 import Scoreboard from './components/scorePage'
 import {io} from 'socket.io-client';
-const api = import.meta.env.backendURL
+const api = import.meta.env.VITE_API_URL
 const socket = io(api)
 function App() {
   const [visibility , setVisibility] = useState(false)
