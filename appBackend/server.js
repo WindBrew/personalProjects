@@ -6,7 +6,7 @@ const http = require("http")
 const app = express()
 const {Server} = require("socket.io")
 const server = http.createServer(app)
-
+const PORT = process.env.PORT || 5002 //render services auto set a PORT in env (useful to remember)
 const io = new Server(server,{
     cors:{origin:"https://personal-projects-u6zd.vercel.app"}
 })
@@ -71,6 +71,6 @@ app.post("/vote", async(req,res)=>{
 
 
 
-server.listen(5002,"0.0.0.0",()=>{
+server.listen(PORT,()=>{
     console.log("http server is listening on port 5002 to check visit http://localhost:5002")
 })
