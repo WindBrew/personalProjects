@@ -7,7 +7,7 @@ import '@fontsource/nunito'
 import Selection from './components/selectionPage'
 import Scoreboard from './components/scorePage'
 import {io} from 'socket.io-client';
-const api = window.location.hostname === "localhost" ? "http://localhost:5002" : `http://${window.location.hostname}:5002`
+const api = import.meta.env.backendURL
 const socket = io(api)
 function App() {
   const [visibility , setVisibility] = useState(false)
