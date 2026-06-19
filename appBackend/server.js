@@ -8,10 +8,10 @@ const {Server} = require("socket.io")
 const server = http.createServer(app)
 
 const io = new Server(server,{
-    cors:{origin:"https://personal-projects-u6zd.vercel.app/"}
+    cors:{origin:"https://personal-projects-u6zd.vercel.app"}
 })
 
-app.use(cors({origin:"https://personal-projects-u6zd.vercel.app/"}))
+app.use(cors({origin:"https://personal-projects-u6zd.vercel.app"}))
 const database = new Pool({connectionString:process.env.databaseKey})
 app.use(express.json())
 io.on("connection",(socket)=>{
