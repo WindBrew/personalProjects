@@ -8,7 +8,7 @@ import Selection from './components/selectionPage'
 import Scoreboard from './components/scorePage'
 import {io} from 'socket.io-client';
 import Loader from './components/loader'
-const api = import.meta.env.VITE_API_URL_LOCAL
+const api = import.meta.env.VITE_API_URL
 const socket = io(api)
 function App() {
   const [visibility , setVisibility] = useState(false)
