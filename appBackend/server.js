@@ -8,10 +8,10 @@ const {Server} = require("socket.io")
 const server = http.createServer(app)
 const PORT = process.env.PORT || 5002 //render services auto set a PORT in env (useful to remember)
 const io = new Server(server,{
-    cors:{origin:"https://personal-projects-u6zd.vercel.app"}
+    cors:{origin:`${process.env.devURL}`}
 })
 
-app.use(cors({origin:"https://personal-projects-u6zd.vercel.app"}))
+app.use(cors({origin:`${process.env.devURL}`}))
 const database = new Pool({connectionString:process.env.databaseKey})
 app.use(express.json())
 io.on("connection",(socket)=>{
@@ -29,7 +29,7 @@ io.on("connection",(socket)=>{
     })
 })
 app.get("/",(req,res)=>{
-    res.status(ok).json({message: "server live"})
+    res.status(200).json({message: "server live"})
 })
 
 app.post("/user",async(req,res)=>{

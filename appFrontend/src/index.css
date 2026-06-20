@@ -2,3 +2,20 @@
 *{
   font-family: "nunito",sans-serif;
 }
+.swing{
+  transform-origin: 320px 130px;
+  animation: swing 2s ease-in-out infinite;
+}
+@keyframes swing{
+  0%{
+    transform: rotate(-8deg);
+
+  }
+  50%{
+    transform: rotate(8deg);
+
+  }
+  100%{
+    transform: rotate(-8deg);
+  }
+}

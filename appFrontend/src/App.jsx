@@ -8,7 +8,7 @@ import Selection from './components/selectionPage'
 import Scoreboard from './components/scorePage'
 import {io} from 'socket.io-client';
 import Loader from './components/loader'
-const api = import.meta.env.VITE_API_URL
+const api = import.meta.env.VITE_API_URL_LOCAL
 const socket = io(api)
 function App() {
   const [visibility , setVisibility] = useState(false)
@@ -20,27 +20,35 @@ function App() {
   const [boyCountPercentage , updateCount] = useState()
   const [countBoys,updateboyCountPercentage] = useState(0)
   const [countGirls,updateGirlCount] = useState(0) 
-  const [loader, setLoader] =  useState(false)
+  const [loader, setLoader] =  useState(true)
   const castVote = (gender) => {
     setVote(gender)
     console.log("gender selected",gender)
   }
-  useEffect(()=>setVisibility(true) , [])
-
+  useEffect(()=>{setVisibility(true) 
+    console.log(api)
+const checkServer = async () =>{
   try{
     setLoader(true)
       const response = await fetch(`${api}/`,{
-    method:"GET",
+    method:"GET"
 
   })
-  const responseStatus = await response.json()
+  if(response.ok){
+    setLoader(false);
+    console.log("Server is reaching and response is ok")
+    }
   }
-  finally{
-    setLoader(false)
-  }
-
+ catch(err){
+  console.log(err)
+ }
+}
+checkServer()
+}
+, [])
   const sendToDB = async(e) =>{
     e.preventDefault()
+    setLoader(true)
       const res = await fetch(`${api}/user`,{
     method:"POST",
     headers:{
@@ -52,6 +60,7 @@ function App() {
   })
   const data = await res.json()
   if(res.ok){
+    setLoader(false)
     console.log(user)
     console.log("user has been appended to db successfully", data)
     setUser("")
@@ -66,6 +75,7 @@ function App() {
     
   }
 const submitVote = async() =>{
+  setLoader(true)
   console.log(userID)
   console.log("Vote has been submitted for ",vote)
   const res = await fetch(`${api}/vote`,{
@@ -80,6 +90,7 @@ const submitVote = async() =>{
   })
   const data = await res.json()
   if(res.ok){
+    setLoader(false)
     socket.emit("vote")
     socket.on("updatedCount",(data)=>{
       updateCount(data.boysCountPercentage)
@@ -103,7 +114,7 @@ const submitVote = async() =>{
       loader && <Loader />
     }
      
-    { page === "home" &&
+    {!loader && page === "home" &&
      <div className={` relative  min-h-screen overflow-hidden `}>
       <div className='bg-[#FF6DB6] w-1/2 border-none fixed  top-0 right-0 inset-y-0 '>
 
