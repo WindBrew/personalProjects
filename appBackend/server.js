@@ -29,12 +29,9 @@ io.on("connection",(socket)=>{
     })
 })
 app.get("/",(req,res)=>{
-    res.json({message: "successfully activated backend base"})
+    res.status(ok).json({message: "server live"})
 })
-app.post("/",async(req,res)=>{
-    await database.query("insert into uservotes (username,vote) values ($1,$2) ",[req.body.user,req.body.vote])
-    res.json({message:"success"})
-})
+
 app.post("/user",async(req,res)=>{
     if((req.body?.user).length > 0 && req.body?.user != " "){
      const userID =   (await database.query("insert into uservotes (username) values ($1) returning id",[req.body.user])).rows[0].id

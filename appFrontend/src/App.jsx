@@ -7,6 +7,7 @@ import '@fontsource/nunito'
 import Selection from './components/selectionPage'
 import Scoreboard from './components/scorePage'
 import {io} from 'socket.io-client';
+import Loader from './components/loader'
 const api = import.meta.env.VITE_API_URL
 const socket = io(api)
 function App() {
@@ -19,11 +20,25 @@ function App() {
   const [boyCountPercentage , updateCount] = useState()
   const [countBoys,updateboyCountPercentage] = useState(0)
   const [countGirls,updateGirlCount] = useState(0) 
+  const [loader, setLoader] =  useState(false)
   const castVote = (gender) => {
     setVote(gender)
     console.log("gender selected",gender)
   }
   useEffect(()=>setVisibility(true) , [])
+
+  try{
+    setLoader(true)
+      const response = await fetch(`${api}/`,{
+    method:"GET",
+
+  })
+  const responseStatus = await response.json()
+  }
+  finally{
+    setLoader(false)
+  }
+
   const sendToDB = async(e) =>{
     e.preventDefault()
       const res = await fetch(`${api}/user`,{
@@ -84,7 +99,9 @@ const submitVote = async() =>{
     <>
   
    
-
+    {
+      loader && <Loader />
+    }
      
     { page === "home" &&
      <div className={` relative  min-h-screen overflow-hidden `}>
