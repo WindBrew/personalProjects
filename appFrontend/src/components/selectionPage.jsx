@@ -1,4 +1,4 @@
-import { act, useState } from "react";
+import { react, useState } from "react";
 export default function Selection(props){
     const [activeButton , setActivebutton] = useState()
     return(

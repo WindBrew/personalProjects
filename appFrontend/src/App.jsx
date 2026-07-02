@@ -4,27 +4,39 @@ import { useEffect, useState } from 'react'
 // import heroImg from './assets/hero.png'
 import './App.css'
 import '@fontsource/nunito'
+import '@fontsource/fredoka'
+import '@fontsource/lilita-one'
 import Selection from './components/selectionPage'
 import Scoreboard from './components/scorePage'
+import Scorelist from "./components/list"
+import Questions from "./components/questiions"
+import NamePage from "./components/naming"
+import Suggestion from './components/suggestion'
+
+
 import {io} from 'socket.io-client';
+
 import Loader from './components/loader'
 const api = import.meta.env.VITE_API_URL
 const socket = io(api)
 function App() {
   const [visibility , setVisibility] = useState(false)
-  const [page,setPage] = useState("home")
+  const [page,setPage] = useState("scorelist")
+
   const [user, setUser] = useState('')
-  const [vote,setVote] = useState()
+  const [vote,setVote] = useState('boy')
   const [placeholder, updatePlaceholder] = useState("Enter your name")
   const [userID,updateUserId] = useState()
   const [boyCountPercentage , updateCount] = useState()
   const [countBoys,updateboyCountPercentage] = useState(0)
   const [countGirls,updateGirlCount] = useState(0) 
   const [loader, setLoader] =  useState(true)
+  const updatePage = (x) => setPage(x)
   const castVote = (gender) => {
     setVote(gender)
     console.log("gender selected",gender)
   }
+
   useEffect(()=>{setVisibility(true) 
     console.log(api)
 const checkServer = async () =>{
@@ -46,6 +58,7 @@ const checkServer = async () =>{
 checkServer()
 }
 , [])
+
   const sendToDB = async(e) =>{
     e.preventDefault()
     setLoader(true)
@@ -91,6 +104,7 @@ const submitVote = async() =>{
   const data = await res.json()
   if(res.ok){
     setLoader(false)
+  
     socket.emit("vote")
     socket.on("updatedCount",(data)=>{
       updateCount(data.boysCountPercentage)
@@ -99,7 +113,7 @@ const submitVote = async() =>{
       updateGirlCount(data.girlsCount)
     })
     console.log("successfully voted in db")
-    setPage("score")
+     setPage("naming")
   }
   else{
     console.log(data)
@@ -112,6 +126,9 @@ const submitVote = async() =>{
    
     {
       loader && <Loader />
+    }
+    {
+      page === "scorelist" && <Scorelist api={api} />
     }
      
     {!loader && page === "home" &&
@@ -159,6 +176,18 @@ const submitVote = async() =>{
     <button className='fixed rounded-4xl bg-gray-300 font-semibold bottom-1/4 z-50 left-1/2 -translate-x-1/2 p-4' onClick={submitVote}>Confirm your choice </button>
   }
   </>
+}
+{
+  page === 'questions' && 
+  <Questions userID={userID} api={api} pageUpdate={updatePage}/>
+}
+{
+  page === 'suggestion' && 
+  <Suggestion api={api} userID={userID} pageUpdate={updatePage}/>
+}
+{
+  page === 'naming' &&
+  <NamePage gender={vote} api={api} userID={userID} pageUpdate={updatePage}/>
 }
 {
   page === 'score' && 

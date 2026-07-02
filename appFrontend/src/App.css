@@ -7,3 +7,87 @@ body,
   min-height: 100%;
   overflow-x: hidden;
 }
+.fredoka {
+  font-family: "Fredoka", sans-serif;
+}
+
+.lilita {
+  font-family: "Lilita One", cursive;
+}
+.scrollbar-hide{
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar{
+  display: none;
+}
+.exit-left{
+  animation:exitLeft 2s ease forwards;
+}
+.exit-right{
+  animation:exitRight 2s ease forwards;
+}
+.gradientTR-animate{
+    background: linear-gradient(to top right,
+       #54a8dd 0%,
+        #1a48efda 25%,
+        #a81bdfc9 50%,
+        #ff2f82d5 75%,
+        #ed679c 100%
+      );
+      background-size: 200% 200%;
+  animation: moveGrad 6s ease infinite;
+}
+.gradientTR-animate-lite{
+    background: linear-gradient(to top right,
+       #48a2db 0%,
+        #54beffe0 25%,
+        #dc82ffc9 50%,
+        #ff77adb0 75%,
+        #fd85af 100%
+      );
+      background-size: 200% 200%;
+  animation: moveGrad 6s ease infinite;
+}
+.gradientTL-animate{
+  background: linear-gradient(to top left,
+       #68bbefc7 0%,
+        #355ef1 25%,
+        #7940cae8 50%,
+        #e92976ee 75%,
+        #e572a0 100%
+      );
+      background-size: 200% 200%;
+  animation: moveGrad 6s ease infinite;
+}
+@keyframes exitLeft{
+  0%{
+    transform: translateX(0)
+  }
+  100%{
+    transform: translateX(-100%)
+  }
+}
+@keyframes exitRight{
+  0%{
+    transform: translateX(0)
+  }
+  100%{
+    transform: translateX(100%)
+  }
+}
+@keyframes moveGrad{
+  0%{
+      background-position: 0% 50%;
+  }
+  25%{
+     background-position: 50% 100% ;
+  }
+  50%{
+     background-position: 100% 50%;
+  }
+
+  100%{
+     background-position: 0% 50%;
+  }
+}
