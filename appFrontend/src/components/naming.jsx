@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 export default function NamePage(props){
 const [name,setName] = useState("")
     const [placeholderText, setPlaceholderText] = useState("Baby's name")
