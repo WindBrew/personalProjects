@@ -21,7 +21,7 @@ const api = import.meta.env.VITE_API_URL
 const socket = io(api)
 function App() {
   const [visibility , setVisibility] = useState(false)
-  const [page,setPage] = useState("scorelist")
+  const [page,setPage] = useState("home")
 
   const [user, setUser] = useState('')
   const [vote,setVote] = useState('boy')
