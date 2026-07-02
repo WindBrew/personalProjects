@@ -41,7 +41,7 @@ export default function Question(props){
           )
         }))
         }
-            useEffect(()=>       props.loader(false),[])
+        props.loader(false)
         const submitAnswer = async()=>{
           
           console.log("attempted a submit questions")

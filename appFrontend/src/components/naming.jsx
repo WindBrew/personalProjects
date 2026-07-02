@@ -2,7 +2,7 @@ import { useState ,useEffect} from "react";
 export default function NamePage(props){
 const [name,setName] = useState("")
     const [placeholderText, setPlaceholderText] = useState("Baby's name")
-        useEffect(()=>       props.loader(false),[])
+    props.loader(false)
 const submitName = async()=>{
     if(name.trim().length <= 0) {
          setPlaceholderText("Cannot be empty")
