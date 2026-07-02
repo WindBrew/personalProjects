@@ -25,7 +25,7 @@ export default function Suggestion(props){
         })
         const data = await res.json()
         if(res.ok){
-            props.loader(true)
+            
             setPlaceholderText(data.message)
             setTimeout(()=>setPlaceholderText("Your suggestion here"),5000)
             console.log("data : ",data)
