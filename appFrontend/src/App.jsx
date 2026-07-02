@@ -36,7 +36,7 @@ function App() {
     setVote(gender)
     console.log("gender selected",gender)
   }
-
+const loaderSet = (bool) => setLoader(bool)
   useEffect(()=>{setVisibility(true) 
     console.log(api)
 const checkServer = async () =>{
@@ -179,15 +179,15 @@ const submitVote = async() =>{
 }
 {
   page === 'questions' && 
-  <Questions userID={userID} api={api} pageUpdate={updatePage}/>
+  <Questions userID={userID} api={api} pageUpdate={updatePage} loader={loaderSet}/>
 }
 {
   page === 'suggestion' && 
-  <Suggestion api={api} userID={userID} pageUpdate={updatePage}/>
+  <Suggestion api={api} userID={userID} pageUpdate={updatePage} loader={loaderSet} />
 }
 {
   page === 'naming' &&
-  <NamePage gender={vote} api={api} userID={userID} pageUpdate={updatePage}/>
+  <NamePage gender={vote} api={api} userID={userID} pageUpdate={updatePage} loader={loaderSet} />
 }
 {
   page === 'score' && 

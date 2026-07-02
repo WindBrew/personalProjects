@@ -1,14 +1,16 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export default function Suggestion(props){
     const [suggestText,setSuggestText] = useState("")
     const [placeholderText, setPlaceholderText] = useState("Your suggestion here")
+    useEffect(()=>       props.loader(false),[])
     const submitSuggestion = async (e)=>{
         if(suggestText.trim().length <= 0){
             setPlaceholderText("Cannot be empty")
             setTimeout(()=>setPlaceholderText("Your suggestion here"),3000)
         }
         else{
+      
         e.preventDefault()
         const res = await fetch(`${props.api}/addData`,{
             method:"PATCH",
@@ -23,10 +25,12 @@ export default function Suggestion(props){
         })
         const data = await res.json()
         if(res.ok){
+            props.loader(true)
             setPlaceholderText(data.message)
             setTimeout(()=>setPlaceholderText("Your suggestion here"),5000)
             console.log("data : ",data)
             props.pageUpdate("score")
+     
         }
         else{
             console.log("failed")

@@ -41,14 +41,9 @@ export default function Question(props){
           )
         }))
         }
+            useEffect(()=>       props.loader(false),[])
         const submitAnswer = async()=>{
-          console.log({
-    userID: props.userID,
-    date: `${date.Year}-${date.Month}-${date.Day}`,
-    qualitiesofdad: dadsList,
-    qualitiesofmom: momsList,
-    relation
-});
+          
           console.log("attempted a submit questions")
           const res = await fetch(`${props.api}/addData`,{
             method:"PATCH",
@@ -68,6 +63,7 @@ export default function Question(props){
           if(res.ok){
             console.log(data)
             props.pageUpdate("suggestion")
+            props.loader(true)
             console.log(date.Year,date.Month,date.Day)
           }
           else{
