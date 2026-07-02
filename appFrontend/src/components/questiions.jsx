@@ -63,8 +63,9 @@ export default function Question(props){
           if(res.ok){
             console.log(data)
             props.pageUpdate("suggestion")
-            props.loader(true)
+            
             console.log(date.Year,date.Month,date.Day)
+            props.loader(false)
           }
           else{
             console.log("error")
@@ -204,7 +205,7 @@ export default function Question(props){
       <div className="lg:w-1/2 justify-center items-center flex flex-col space-y-8 md:w-[65%] w-[95%]">
       <h3>What will the baby know you as?</h3>
       <input type="text" placeholder={boxText.length > 0 ? boxText : "Relation"} className="text-center  w-[98%] p-4 rounded-xl focus:outline-none border-1 border-white/40"   onChange={(e)=>setRelation(e.target.value)}/>
-            <button className='w-[96%]  bg-violet-500/20 rounded-xl p-4 text-white text-md font-bold shadow-xl' onClick={()=>{relation.length <= 0 ? SetBox() : submitAnswer()}}>Submit</button>
+            <button className='w-[96%]  bg-violet-500/20 rounded-xl p-4 text-white text-md font-bold shadow-xl' onClick={()=>{relation.length <= 0 ? SetBox() : submitAnswer(); props.loader(true)}}>Submit</button>
       </div>
     }
 

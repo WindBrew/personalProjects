@@ -2,14 +2,14 @@ import { useState ,useEffect} from "react";
 export default function NamePage(props){
 const [name,setName] = useState("")
     const [placeholderText, setPlaceholderText] = useState("Baby's name")
-    props.loader(false)
+    
 const submitName = async()=>{
     if(name.trim().length <= 0) {
          setPlaceholderText("Cannot be empty")
         setTimeout(()=> setPlaceholderText("Baby's name"),3000)
     }
     else{
-      
+      props.loader(true)
     const res = await fetch(`${props.api}/addData`,{
         method:"PATCH",
         headers:{
@@ -24,7 +24,7 @@ const submitName = async()=>{
     console.log("data : ",data)
     if(res.ok){
         props.pageUpdate("questions")
-        props.loader(true)
+        props.loader(false)
         setPlaceholderText(data.message)
         setTimeout(()=> setPlaceholderText("Baby's name"),4000)
     }
