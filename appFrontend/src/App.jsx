@@ -24,7 +24,7 @@ function App() {
   const [page,setPage] = useState("home")
 
   const [user, setUser] = useState('')
-  const [vote,setVote] = useState('boy')
+  const [vote,setVote] = useState()
   const [placeholder, updatePlaceholder] = useState("Enter your name")
   const [userID,updateUserId] = useState()
   const [boyCountPercentage , updateCount] = useState()
