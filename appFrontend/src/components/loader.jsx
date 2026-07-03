@@ -1,6 +1,6 @@
 const StorkLoader = () => {
   return (
-    <div className="h-full w-full">
+    <div className="h-full w-full z-50">
       <style>{`
         @keyframes stork-float {
           0%, 100% { transform: translateY(20px); }
