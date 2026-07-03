@@ -10,7 +10,7 @@ export default function Suggestion(props){
             setTimeout(()=>setPlaceholderText("Your suggestion here"),3000)
         }
         else{
-      
+        props.loader(true)
         e.preventDefault()
         const res = await fetch(`${props.api}/addData`,{
             method:"PATCH",
@@ -44,7 +44,7 @@ export default function Suggestion(props){
             <div className="rounded-xl flex flex-col space-y-8 p-4 justify-center items-center bg-white/10 backdrop-blur-xl backdrop-brightness-125 w-[90%] lg:w-1/3 md:w-[70%]">
                 <h4>Suggestion for the new parents</h4>
                 <textarea  type="text" placeholder={placeholderText} className="rounded-xl min-h-20 max-h-84 text-center w-[90%] bg-white/20 border-1 border-white/10 p-4 focus:outline-none scrollbar-hide" value={suggestText} onChange={(e)=>{setSuggestText(e.target.value); }}/>
-                <button className="rounded-xl bg-blue-800 text-white/80 p-4 shadow-xl w-[94%] text-xl font-bold scrollbar-hide" onClick={(e)=>{submitSuggestion(e); props.loader(true)}}>Submit</button>
+                <button className="rounded-xl bg-blue-800 text-white/80 p-4 shadow-xl w-[94%] text-xl font-bold scrollbar-hide" onClick={(e)=>{submitSuggestion(e);}}>Submit</button>
             </div>
         </div>
     )
