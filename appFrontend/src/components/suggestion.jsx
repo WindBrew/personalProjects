@@ -8,6 +8,7 @@ export default function Suggestion(props){
         if(suggestText.trim().length <= 0){
             setPlaceholderText("Cannot be empty")
             setTimeout(()=>setPlaceholderText("Your suggestion here"),3000)
+            props.loader(false)
         }
         else{
         props.loader(true)
