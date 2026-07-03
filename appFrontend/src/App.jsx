@@ -194,7 +194,6 @@ const submitVote = async() =>{
 {!loader && 
   page === 'score' && 
   <div className='relative h-screen w-screen overflow-hidden'>
-
   <Scoreboard size={boyCountPercentage} boysCount={countBoys} girlsCount={countGirls}/>
 
   </div>
