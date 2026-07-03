@@ -12,6 +12,7 @@ export default function Suggestion(props){
         }
         else{
         props.loader(true)
+        console.log("Suggestions loader set ");
         e.preventDefault()
         const res = await fetch(`${props.api}/addData`,{
             method:"PATCH",

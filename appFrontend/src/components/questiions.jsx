@@ -44,6 +44,7 @@ export default function Question(props){
         
         const submitAnswer = async()=>{
           props.loader(true)
+          console.log("Questions loader set ")
           console.log("attempted a submit questions")
           const res = await fetch(`${props.api}/addData`,{
             method:"PATCH",

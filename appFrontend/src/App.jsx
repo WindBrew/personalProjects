@@ -36,7 +36,7 @@ function App() {
     setVote(gender)
     console.log("gender selected",gender)
   }
-const loaderSet = (bool) => setLoader(bool)
+const loaderSet = (x) => setLoader(x)
   useEffect(()=>{setVisibility(true) 
     console.log(api)
 const checkServer = async () =>{
@@ -74,6 +74,7 @@ checkServer()
   const data = await res.json()
   if(res.ok){
     setLoader(false)
+    console.log("Username submitted loader set")
     console.log(user)
     console.log("user has been appended to db successfully", data)
     setUser("")
@@ -89,6 +90,7 @@ checkServer()
   }
 const submitVote = async() =>{
   setLoader(true)
+  console.log("Vote submittion loader set")
   console.log(userID)
   console.log("Vote has been submitted for ",vote)
   const res = await fetch(`${api}/vote`,{
@@ -173,7 +175,7 @@ const submitVote = async() =>{
   <Selection castVote={castVote}/>
   {
     vote !== undefined && 
-    <button className='fixed rounded-4xl bg-gray-300 font-semibold bottom-1/4 z-50 left-1/2 -translate-x-1/2 p-4' onClick={submitVote}>Confirm your choice </button>
+    <button className='fixed rounded-4xl bg-gray-300 font-semibold bottom-1/4 z-40 left-1/2 -translate-x-1/2 p-4' onClick={submitVote}>Confirm your choice </button>
   }
   </>
 }

@@ -7,9 +7,11 @@ const submitName = async()=>{
     if(name.trim().length <= 0) {
          setPlaceholderText("Cannot be empty")
         setTimeout(()=> setPlaceholderText("Baby's name"),3000)
+        props.loader(false)
     }
     else{
       props.loader(true)
+      console.log("Naming loader set")
     const res = await fetch(`${props.api}/addData`,{
         method:"PATCH",
         headers:{
