@@ -1,6 +1,6 @@
 const StorkLoader = () => {
   return (
-    <>
+    <div className="h-full w-full">
       <style>{`
         @keyframes stork-float {
           0%, 100% { transform: translateY(20px); }
@@ -121,7 +121,7 @@ const StorkLoader = () => {
         <circle className="stork-dot-2" cx="57%" cy="94%" r="3" fill="#888780" />
         <circle className="stork-dot-3" cx="59%" cy="94%" r="3" fill="#888780" />
       </svg>
-    </>
+    </div>
   );
 };
 

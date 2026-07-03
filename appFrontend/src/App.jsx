@@ -175,7 +175,7 @@ const submitVote = async() =>{
   <Selection castVote={castVote}/>
   {
     vote !== undefined && 
-    <button className='fixed rounded-4xl bg-gray-300 font-semibold bottom-1/4 z-40 left-1/2 -translate-x-1/2 p-4' onClick={submitVote}>Confirm your choice </button>
+    <button className='fixed rounded-4xl bg-gray-300 font-semibold bottom-1/4 z-30 left-1/2 -translate-x-1/2 p-4' onClick={submitVote}>Confirm your choice </button>
   }
   </>
 }
