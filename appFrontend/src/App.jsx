@@ -170,7 +170,7 @@ const submitVote = async() =>{
       </div>
 }
 {
-  page === "selection" &&
+ !loader &&  page === "selection" &&
   <>
   <Selection castVote={castVote}/>
   {
@@ -179,19 +179,19 @@ const submitVote = async() =>{
   }
   </>
 }
-{
+{!loader && 
   page === 'questions' && 
   <Questions userID={userID} api={api} pageUpdate={updatePage} loader={loaderSet}/>
 }
-{
+{!loader && 
   page === 'suggestion' && 
   <Suggestion api={api} userID={userID} pageUpdate={updatePage} loader={loaderSet} />
 }
-{
+{!loader && 
   page === 'naming' &&
   <NamePage gender={vote} api={api} userID={userID} pageUpdate={updatePage} loader={loaderSet} />
 }
-{
+{!loader && 
   page === 'score' && 
   <div className='relative h-screen w-screen overflow-hidden'>
 
