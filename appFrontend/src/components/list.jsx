@@ -106,10 +106,10 @@ else{
     return(
         <div className="flex relative justify-center select-none gradientTR-animate-lite items-center h-screen inset-0">
             <h3 className="text-3xl font-semibold absolute top-12">Welcome Admin!</h3>
-            <button className="fixed top-12 left-1/2 -translate-x-1/2 rounded-3xl border-4 p-2 space-x-4 border-white/30 flex flex-row " onClick={refreshData}><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+            <button className="fixed top-1 left-1/2 -translate-x-1/2 rounded-3xl border-4 p-2 space-x-4 border-white/30 flex flex-row " onClick={refreshData}><div> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
   <path fill-rule="evenodd" d="M15.312 11.424a5.5 5.5 0 0 1-9.201 2.466l-.312-.311h2.433a.75.75 0 0 0 0-1.5H3.989a.75.75 0 0 0-.75.75v4.242a.75.75 0 0 0 1.5 0v-2.43l.31.31a7 7 0 0 0 11.712-3.138.75.75 0 0 0-1.449-.39Zm1.23-3.723a.75.75 0 0 0 .219-.53V2.929a.75.75 0 0 0-1.5 0V5.36l-.31-.31A7 7 0 0 0 3.239 8.188a.75.75 0 1 0 1.448.389A5.5 5.5 0 0 1 13.89 6.11l.311.31h-2.432a.75.75 0 0 0 0 1.5h4.243a.75.75 0 0 0 .53-.219Z" clip-rule="evenodd" />
-</svg>
- Refresh </button>
+</svg></div>
+<div> Refresh </div> </button>
             <button className={`absolute bottom-4 p-4 font-semibold rounded-3xl ${!deletionMode ? "bg-red-500" : "bg-gray-400"}`} onClick={()=>setDeletionMode(!deletionMode)}>{deletionMode ? "View mode" : "Deletion mode"}</button>
 
         <div className={`space-y-8  ring-1 ring-white/10 shadow-[0_8px_32px_rgba(255,255,255,0.15)] scrollbar-hide rounded-md min-h-[150px] max-h-[300px]   overflow-auto scrollbar-hide rounded-lg bg-gray-400/30 backdrop-blur-md m-4 w-[90%] lg:w-1/4 md:w-1/3 font-semibold text-center p-2 pt-0`}>
