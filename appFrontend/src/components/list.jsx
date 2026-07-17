@@ -94,8 +94,8 @@ const deleteUser = async() =>{
             <h3 className="text-3xl font-semibold absolute top-12">Welcome Admin!</h3>
             <button className={`absolute bottom-4 p-4 font-semibold rounded-3xl ${!deletionMode ? "bg-red-500" : "bg-gray-400"}`} onClick={()=>setDeletionMode(!deletionMode)}>{deletionMode ? "View mode" : "Deletion mode"}</button>
 
-        <div className={`space-y-8  ring-1 ring-white/10 shadow-[0_8px_32px_rgba(255,255,255,0.15)] scrollbar-hide rounded-md min-h-[150px]   overflow-auto scrollbar-hide rounded-lg bg-gray-400/30 backdrop-blur-md m-4 w-[90%] lg:w-1/4 md:w-1/3 font-semibold text-center p-2 pt-0`}>
-            <div className="grid z-50 -mb-[0.5px] grid-cols-[140px_40px_120px_100px_120px_120px_70px_220px] sticky top-0 p-2 -mx-4 gap-y-[2px] gap-x-6   backdrop-blur-lg   backdrop-brightness-100   content-start">
+        <div className={`space-y-8  ring-1 ring-white/10 shadow-[0_8px_32px_rgba(255,255,255,0.15)] scrollbar-hide rounded-md min-h-[150px] max-h-[300px]   overflow-auto scrollbar-hide rounded-lg bg-gray-400/30 backdrop-blur-md m-4 w-[90%] lg:w-1/4 md:w-1/3 font-semibold text-center p-2 pt-0`}>
+            <div className="grid z-50  min-w-max -mb-[0.5px] grid-cols-[140px_40px_120px_100px_120px_120px_70px_220px] sticky top-0 p-2 -mx-4 gap-y-[2px] gap-x-6   backdrop-blur-xl   backdrop-brightness-100   content-start">
             <h1  className="font-semibold sticky text-center px-2 top-0 fredoka m-0 w-40">Name</h1>
             <h1  className="font-semibold sticky text-center px-2 top-0 fredoka m-0 ">Vote</h1>
             <h1  className="font-semibold sticky text-center px-2 top-0 fredoka m-0 ">Baby's Name</h1>
@@ -107,20 +107,26 @@ const deleteUser = async() =>{
             </div>
             {userBoard.map(user=>{return(
                 
-                <div key={user.id} className={`pb-2 ${user.id === key ? "z-40" : "z-0"} relative grid grid-cols-[160px_80px_120px_120px_150px_150px_100px_220px]  transition-all duration-1000 ease-in-out ${(rowExpanded) && user.id === key  ? "h-54 " : "h-10"} mb-2 gap-x-0 hover:scale-105 transition rounded-md`} onClick={()=>KeyManage(user.id)}>
-            <div className="bg-white p-2 items-center flex truncate rounded-l-md border-r border-gray-300 scrollbar-hide">{user.username} 
-            
-            </div>
-            <div className="flex items-center bg-white font-bold truncate justify-between p-2"><span className="text-center w-full">{user.vote}</span>
-                {deletionMode &&
-                <button onClick={()=>{setActive(true); setUser(user.username)}}>
+                <div key={user.id} className={`pb-2 ${user.id === key ? "z-40" : "z-0"} relative grid grid-cols-[160px_80px_120px_120px_150px_150px_100px_480px] scrollbar-hide overflow-y-hidden overflow-x-hidden min-w-[1100px] transition-all duration-1000 ease-in-out ${(rowExpanded) && user.id === key  ? "h-54 " : "h-10"} mb-2 gap-x-0 hover:scale-105 transition rounded-md`} onClick={()=>KeyManage(user.id)}>
+                     <div className="flex items-center bg-white font-bold truncate justify-between p-2">
+                     {deletionMode &&
+                <button className="p-4" onClick={()=>{setActive(true); setUser(user.username)}}>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="red" className="size-5 hover:cursor-pointer" >
-  <path fill-rule="evenodd" d="M8.75 1A2.75 2.75 0 0 0 6 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 1 0 .23 1.482l.149-.022.841 10.518A2.75 2.75 0 0 0 7.596 19h4.807a2.75 2.75 0 0 0 2.742-2.53l.841-10.52.149.023a.75.75 0 0 0 .23-1.482A41.03 41.03 0 0 0 14 4.193V3.75A2.75 2.75 0 0 0 11.25 1h-2.5ZM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4ZM8.58 7.72a.75.75 0 0 0-1.5.06l.3 7.5a.75.75 0 1 0 1.5-.06l-.3-7.5Zm4.34.06a.75.75 0 1 0-1.5-.06l-.3 7.5a.75.75 0 1 0 1.5.06l.3-7.5Z" clip-rule="evenodd" />
+  <path fill-rule="evenodd" 
+  d="M8.75 1A2.75 2.75 0 0 0 6 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 1 0 .23 1.482l.149-.022.841 10.518A2.75 2.75 0 0 0 7.596 19h4.807a2.75 2.75 0 0 0 2.742-2.53l.841-10.52.149.023a.75.75 0 0 0 .23-1.482A41.03 41.03 0 0 0 14 4.193V3.75A2.75 2.75 0 0 0 11.25 1h-2.5ZM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4ZM8.58 7.72a.75.75 0 0 0-1.5.06l.3 7.5a.75.75 0 1 0 1.5-.06l-.3-7.5Zm4.34.06a.75.75 0 1 0-1.5-.06l-.3 7.5a.75.75 0 1 0 1.5.06l.3-7.5Z" 
+  clip-rule="evenodd" />
+
 </svg>
 
 
                 
-                </button>}
+                </button>
+                
+                } <h1>{user.username}</h1>
+                </div>
+
+            <div className="flex items-center bg-white font-bold truncate p-2"><span className="text-center w-full">{user.vote}</span>
+               
             </div>
             <div className="truncate whitespace-nowrap flex  bg-white p-2 items-center scrollbar-hide">
                <span className="w-full text-center">{user.name}</span>
@@ -196,7 +202,9 @@ const deleteUser = async() =>{
              <div className="truncate flex  bg-white p-2 items-center scrollbar-hide">
                <span className="w-full text-center">{user.relation}</span>
             </div>
-             <div className={`max-w-[220px] flex rounded-r-md bg-white p-2 whitespace-wrap items-center scrollbar-hide ${user.id === key && rowExpanded ? "" : "truncate"}`} onClick={()=>{setReadsuggestion(!readSuggestion)}}>
+             <div className={`max-w-[220px] min-w-0 flex flex-wrap rounded-r-md bg-white p-4 items-center scrollbar-hide ${  user.id === key && rowExpanded 
+      ? "break-words whitespace-normal" 
+      : "truncate"}`} onClick={()=>{setReadsuggestion(!readSuggestion); setPrev({mom: false,dad: false})}}>
                <span className="text-center break-words ">{user.suggestion}</span>
             </div>
            
@@ -205,7 +213,7 @@ const deleteUser = async() =>{
             }    
         )
             }    
-        
+                                                                                        
         </div>
         {
         active &&

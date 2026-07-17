@@ -1,7 +1,4 @@
 import { useEffect, useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from './assets/vite.svg'
-// import heroImg from './assets/hero.png'
 import './App.css'
 import '@fontsource/nunito'
 import '@fontsource/fredoka'
@@ -12,7 +9,7 @@ import Scorelist from "./components/list"
 import Questions from "./components/questiions"
 import NamePage from "./components/naming"
 import Suggestion from './components/suggestion'
-
+import { useLanguage } from './langManager'
 
 import {io} from 'socket.io-client';
 
@@ -31,7 +28,10 @@ function App() {
   const [countBoys,updateboyCountPercentage] = useState(0)
   const [countGirls,updateGirlCount] = useState(0) 
   const [loader, setLoader] =  useState(true)
+  const {t,lang,setLang} = useLanguage()
+  const [admin,sAdmin] = useState("")
   const updatePage = (x) => setPage(x)
+  
   const castVote = (gender) => {
     setVote(gender)
     console.log("gender selected",gender)
@@ -60,6 +60,10 @@ checkServer()
 , [])
 
   const sendToDB = async(e) =>{
+    if(user.toLowerCase() === "admin"){
+      setPage("adminVerification")
+    }
+    else{
     e.preventDefault()
     setLoader(true)
       const res = await fetch(`${api}/user`,{
@@ -86,7 +90,30 @@ checkServer()
     console.log(data)
     updatePlaceholder(data.message)
   }
-    
+    }
+  }
+  const verifyAdmin = async(e) =>{
+    e.preventDefault();
+    if(admin.trim().length <= 0){setPage("home"); return}
+    const res = await fetch(`${api}/verifyAdmin`,{
+      method:"POST",
+      headers:{
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      pass: admin
+    })
+    })
+    const data = await res.json()
+    if(res.ok){
+      console.log(data)
+      setPage("scorelist")
+    }
+    else{
+      sAdmin("")
+      setUser("")
+      setPage("home")
+    }
   }
 const submitVote = async() =>{
   setLoader(true)
@@ -124,14 +151,31 @@ const submitVote = async() =>{
 }
   return (
     <>
-  
-   
+    
+   {
+    !loader && (page !== "adminVerification" && page !== "scorelist") && <button className='fixed top-2 right-4 z-50 rounded-3xl px-4 border-white/30 border-2 p-1 font-bold' onClick={()=>setLang(lang === "mr" ? "en" : "mr" )}>{lang === "mr" ? "English" : "मराठी"}</button>
+   }
     {
       loader && <Loader />
     }
     {
       page === "scorelist" && <Scorelist api={api} />
     }
+    {!loader &&
+      page === "adminVerification" && 
+        <div className={`
+     bg-gradient-to-l from-gray-800 via slate-300 to-stone-500 w-screen h-screen overflow-hidden flex flex-col justify-center items-center `}>
+            <div className="bg-white/20 backdrop-blur-md backdrop-brightness-125 backdrop-saturation-125 lg:w-1/3 md:w-[65%] w-[95%] pb-8 h-auto p-4 rounded-xl space-y-8 flex flex-col justify-center">
+            <h3 className="relative font-semibold text-lg md:text-xl text-center">Enter admin password </h3>
+            
+          <form  className='space-y-8' onSubmit={(e)=>verifyAdmin(e)}>
+            <input type="text" className="flex w-full justify-center rounded-xl bg-white/30 backdrop-blur-sm backdrop-brightness-50 p-2 border-1 border-white focus:outline-none font-bold text-lg text-center" value={admin} onChange={(e)=>sAdmin(e.target.value)} /> 
+            <button  type="submit" className={`bg-yellow-400 flex w-full justify-center shadow-xl text-lg text-black font-bold rounded-2xl p-4`}>Submit</button>
+          </form>
+            </div>
+        
+        </div>
+}
      
     {!loader && page === "home" &&
      <div className={` relative  min-h-screen overflow-hidden `}>
@@ -145,8 +189,8 @@ const submitVote = async() =>{
             <h3 className='text-center text-2xl
             font-semibold
             tracking-tight
-            text-gray-900'>Who will it be ? any guesses </h3>
-          <div className='items-center w-1/2 '><div className='flex justify-between font-semibold text-xl  tracking-tight' ><span>Boy</span><span>Girl</span></div> <div className='h-2 rounded-2xl overflow-hidden flex border-1 border-black'><div id="boy" className='bg-blue-600 h-full w-1/2'></div><div className='bg-pink-600 h-full w-1/2'></div></div> </div>
+            text-gray-900'>{t("Who will it be ? any guesses")} </h3>
+          <div className='items-center w-1/2 '><div className='flex justify-between font-semibold text-xl  tracking-tight' ><span>{t("Boy")}</span><span>{t("Girl")}</span></div> <div className='h-2 rounded-2xl overflow-hidden flex border-1 border-black'><div id="boy" className='bg-blue-600 h-full w-1/2'></div><div className='bg-pink-600 h-full w-1/2'></div></div> </div>
           <span className='relative h-38'></span>
 
         <div className={`bg-zinc-50/70  backdrop-blur-sm h-auto w-[90%] max-w-sm  
@@ -156,13 +200,13 @@ const submitVote = async() =>{
           <h3 className='text-center text-2xl
             font-semibold
             tracking-tight
-            text-gray-900'>What's your full name ?</h3>
+            text-gray-900'>{t("What's your full name ?")}</h3>
           <p className="text-sm text-gray-600 mt-2 text-center">
-            Who will be the winner ?
+            {t("Who will be the winner ?")}
             </p>
-            <form className='space-y-4' onSubmit={sendToDB}>
-          <div className='w-full flex justify-center '><input className='w-full resize-none rounded-md bg-gradient-to-r from-blue-200 to-pink-200 p-4 outline-none' placeholder={placeholder}  onChange={(e)=>{setUser(e.target.value);}} value = {user} ></input></div>
-          <div className='w-full flex justify-center' ><button type='submit' className='w-full backdrop-blur-xl bg-gradient-to-l from-blue-500/60 to-pink-500/60 p-4 rounded-lg font-bold hover:cursor-pointer hover:-translate-y-1 hover:shadow-xl active:translate-y-0 active:shadow-md'>Proceed</button></div>
+            <form className='space-y-4' onSubmit={(e)=>user.trim().length > 0 ? sendToDB(e) : updatePlaceholder("Cannot be empty") && setTimeout(()=>updatePlaceholder("Enter your name here"),[6000])}>
+          <div className='w-full flex justify-center '><input className='w-full resize-none rounded-md bg-gradient-to-r from-blue-200 to-pink-200 p-4 outline-none' placeholder={t(placeholder)}  onChange={(e)=>{setUser(e.target.value);}} value = {user} ></input></div>
+          <div className='w-full flex justify-center' ><button type='submit' className='w-full backdrop-blur-xl bg-gradient-to-l from-blue-500/60 to-pink-500/60 p-4 rounded-lg font-bold hover:cursor-pointer hover:-translate-y-1 hover:shadow-xl active:translate-y-0 active:shadow-md'>{t("Proceed")}</button></div>
           </form>
      
         </div>
@@ -175,7 +219,7 @@ const submitVote = async() =>{
   <Selection castVote={castVote}/>
   {
     vote !== undefined && 
-    <button className='fixed rounded-4xl bg-gray-300 font-semibold bottom-1/4 z-40 left-1/2 -translate-x-1/2 p-4' onClick={submitVote}>Confirm your choice </button>
+    <button className='fixed rounded-4xl bg-gray-300 font-semibold bottom-1/4 z-40 left-1/2 -translate-x-1/2 p-4' onClick={submitVote}>{t("Confirm your choice ")}</button>
   }
   </>
 }
@@ -199,7 +243,7 @@ const submitVote = async() =>{
   </div>
 }
 
-    
+  
     </>
   )
 }

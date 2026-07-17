@@ -1,9 +1,11 @@
 import { useState ,useEffect} from "react"
+import { useLanguage } from "../langManager"
+
 export default function Question(props){
+      const {t , lang , setLang } = useLanguage()
       const [question, setQuestion] = useState("date")
       const [momsDropDown , setMomsDropdown] = useState(false)
         const [dadsDropDown , setDadsDropdown] = useState(false)
-     //   const [momsSelector , setMomsSelector] = useState("Select a quality")
      const[relation, setRelation] = useState("")
      const[date,setDate] = useState({
       Year : 2026,
@@ -37,15 +39,18 @@ export default function Question(props){
                 console.log("attempting to change a quality")
               
           return (
-            <li className='hover:scale-105' onClick={()=>{ console.log("Clicked a quality 2"); updateList(quality)}} >{quality}</li>
+            <li className='hover:scale-105' onClick={()=>{ console.log("Clicked a quality 2"); updateList(quality)}} >{t(quality)}</li>
           )
         }))
         }
         
-        const submitAnswer = async()=>{
+        const submitAnswer = async(e)=>{
+          e.preventDefault()
           props.loader(true)
           console.log("Questions loader set ")
           console.log("attempted a submit questions")
+          // NOTE: dadsList, momsList, relation, and date are sent to the backend
+          // exactly as stored in state — always English, never passed through t()
           const res = await fetch(`${props.api}/addData`,{
             method:"PATCH",
             headers:{
@@ -72,7 +77,7 @@ export default function Question(props){
             console.log("error")
           }
         }
-        const SetBox = () =>{setBoxText("cannot be empty");
+        const SetBox = (e) =>{e ? e.preventDefault() : ""; setBoxText("Cannot be empty");
           setTimeout(()=>setBoxText(""),3000)
         }
        
@@ -82,45 +87,44 @@ export default function Question(props){
     <div className='flex overflow-hidden flex-wrap min-h-[30%] inset-0 justify-center space-y-12   p-4 items-center flex-col md:w-1/2 w-[98%] bg-white/10  rounded-xl backdrop-blur-md backdrop-brightness-125 backdrop-saturation-150'>
     {question === "date" &&
     <div className="h-74 space-y-8">
-      <h2 className="text-center">When will the baby arrive ?</h2>
-      {/* <input type="date" onChange={(e)=>setDate(e.target.value)} min={"2026-09-28"} max={"2026-10-20"}/> */}
+      <h2 className="text-center">{t("When will the baby arrive ?")}</h2>
       <div className="flex font-semibold relative text-center transition-all duration-1000 ease-in-out w-64 items-center justify-center">
-        <button className="mb-4 w-auto flex whitespace-nowrap " onClick={()=>setCalender(!calender)}><span className="mx-2">Select date  </span> <svg className="shrink-0 w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"> <path d="M12 11.993a.75.75 0 0 0-.75.75v.006c0 .414.336.75.75.75h.006a.75.75 0 0 0 .75-.75v-.006a.75.75 0 0 0-.75-.75H12ZM12 16.494a.75.75 0 0 0-.75.75v.005c0 .414.335.75.75.75h.005a.75.75 0 0 0 .75-.75v-.005a.75.75 0 0 0-.75-.75H12ZM8.999 17.244a.75.75 0 0 1 .75-.75h.006a.75.75 0 0 1 .75.75v.006a.75.75 0 0 1-.75.75h-.006a.75.75 0 0 1-.75-.75v-.006ZM7.499 16.494a.75.75 0 0 0-.75.75v.005c0 .414.336.75.75.75h.005a.75.75 0 0 0 .75-.75v-.005a.75.75 0 0 0-.75-.75H7.5ZM13.499 14.997a.75.75 0 0 1 .75-.75h.006a.75.75 0 0 1 .75.75v.005a.75.75 0 0 1-.75.75h-.006a.75.75 0 0 1-.75-.75v-.005ZM14.25 16.494a.75.75 0 0 0-.75.75v.006c0 .414.335.75.75.75h.005a.75.75 0 0 0 .75-.75v-.006a.75.75 0 0 0-.75-.75h-.005ZM15.75 14.995a.75.75 0 0 1 .75-.75h.005a.75.75 0 0 1 .75.75v.006a.75.75 0 0 1-.75.75H16.5a.75.75 0 0 1-.75-.75v-.006ZM13.498 12.743a.75.75 0 0 1 .75-.75h2.25a.75.75 0 1 1 0 1.5h-2.25a.75.75 0 0 1-.75-.75ZM6.748 14.993a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1-.75-.75Z" /> <path fill-rule="evenodd" d="M18 2.993a.75.75 0 0 0-1.5 0v1.5h-9V2.994a.75.75 0 1 0-1.5 0v1.497h-.752a3 3 0 0 0-3 3v11.252a3 3 0 0 0 3 3h13.5a3 3 0 0 0 3-3V7.492a3 3 0 0 0-3-3H18V2.993ZM3.748 18.743v-7.5a1.5 1.5 0 0 1 1.5-1.5h13.5a1.5 1.5 0 0 1 1.5 1.5v7.5a1.5 1.5 0 0 1-1.5 1.5h-13.5a1.5 1.5 0 0 1-1.5-1.5Z" clip-rule="evenodd" />
+        <button className="mb-4 w-auto flex whitespace-nowrap " onClick={()=>setCalender(!calender)}><span className="mx-2">{t("Select date  ")}</span> <svg className="shrink-0 w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"> <path d="M12 11.993a.75.75 0 0 0-.75.75v.006c0 .414.336.75.75.75h.006a.75.75 0 0 0 .75-.75v-.006a.75.75 0 0 0-.75-.75H12ZM12 16.494a.75.75 0 0 0-.75.75v.005c0 .414.335.75.75.75h.005a.75.75 0 0 0 .75-.75v-.005a.75.75 0 0 0-.75-.75H12ZM8.999 17.244a.75.75 0 0 1 .75-.75h.006a.75.75 0 0 1 .75.75v.006a.75.75 0 0 1-.75.75h-.006a.75.75 0 0 1-.75-.75v-.006ZM7.499 16.494a.75.75 0 0 0-.75.75v.005c0 .414.336.75.75.75h.005a.75.75 0 0 0 .75-.75v-.005a.75.75 0 0 0-.75-.75H7.5ZM13.499 14.997a.75.75 0 0 1 .75-.75h.006a.75.75 0 0 1 .75.75v.005a.75.75 0 0 1-.75.75h-.006a.75.75 0 0 1-.75-.75v-.005ZM14.25 16.494a.75.75 0 0 0-.75.75v.006c0 .414.335.75.75.75h.005a.75.75 0 0 0 .75-.75v-.006a.75.75 0 0 0-.75-.75h-.005ZM15.75 14.995a.75.75 0 0 1 .75-.75h.005a.75.75 0 0 1 .75.75v.006a.75.75 0 0 1-.75.75H16.5a.75.75 0 0 1-.75-.75v-.006ZM13.498 12.743a.75.75 0 0 1 .75-.75h2.25a.75.75 0 1 1 0 1.5h-2.25a.75.75 0 0 1-.75-.75ZM6.748 14.993a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1-.75-.75Z" /> <path fill-rule="evenodd" d="M18 2.993a.75.75 0 0 0-1.5 0v1.5h-9V2.994a.75.75 0 1 0-1.5 0v1.497h-.752a3 3 0 0 0-3 3v11.252a3 3 0 0 0 3 3h13.5a3 3 0 0 0 3-3V7.492a3 3 0 0 0-3-3H18V2.993ZM3.748 18.743v-7.5a1.5 1.5 0 0 1 1.5-1.5h13.5a1.5 1.5 0 0 1 1.5 1.5v7.5a1.5 1.5 0 0 1-1.5 1.5h-13.5a1.5 1.5 0 0 1-1.5-1.5Z" clip-rule="evenodd" />
               </svg>
         </button>
       
         <div className={`z-40 absolute min-w-max overflow-y-auto  h-50 scrollbar-hide top-[75%] left-1/2 -translate-x-1/2 items-center bg-white/70 rounded-xl p-2 transition-all duration-1000 ease-in-out ${calender ? "opacity-100 translate-y-0 " : "opacity-0 -translate-y-4 pointer-events-none"}`}>
-        <span>September</span>
+        <span>{t("September")}</span>
         
         {
         <div className="grid grid-cols-7">    
          {     
           daysofweek.map((day,index)=>{
-            return (<button key={index} className="p-2">{day}</button>)
+            return (<button key={index} className="p-2">{t(day)}</button>)
           })
         } 
           {     
           calenderValues.September.Dates.map(day=>{
        
-            return( <button key={day} onClick={()=>{setDate(prev =>({...prev,Month: 9,Day:day})); setCalender(!calender)}}  className={`p-2 h-10 w-10 focus:outline-4 outline-rose-400 ${day === "" ? "pointer-events-none" : "hover:cursor-pointer"} rounded-full`}>{day}</button>)
+            return( <button key={day} onClick={()=>{setDate(prev =>({...prev,Month: 9,Day:day})); setCalender(!calender)}}  className={`p-2 h-10 w-10 focus:outline-4 outline-rose-400 ${day === "" ? "pointer-events-none" : "hover:cursor-pointer"} rounded-full`}>{t(day)}</button>)
           })
 }
         </div>
 }
 <hr className="w-full border-1 border-gray-600/20 my-4 h-px" />
- <span>October</span>
+ <span>{t("October")}</span>
         {
         <div className="grid grid-cols-7 ">     
         
           {     
           daysofweek.map(day=>{
-            return (<button key={day} className="p-2">{day}</button>)
+            return (<button key={day} className="p-2">{t(day)}</button>)
           })
         }
         {
           calenderValues.October.Dates.map(day=>{
        
-            return(<button key={day} onClick={()=>{setDate(prev =>({...prev,Month: 10,Day:day})); setCalender(!calender)}}  className={`p-2 h-10 w-10 focus:outline-4 outline-rose-400 ${day === "" ? "pointer-events-none" : "hover:cursor-pointer"} rounded-full`}>{day}</button>)
+            return(<button key={day} onClick={()=>{setDate(prev =>({...prev,Month: 10,Day:day})); setCalender(!calender)}}  className={`p-2 h-10 w-10 focus:outline-4 outline-rose-400 ${day === "" ? "pointer-events-none" : "hover:cursor-pointer"} rounded-full`}>{t(day)}</button>)
           })
 }
         </div>
@@ -130,7 +134,7 @@ export default function Question(props){
         </div>
         <div onClick={()=>setCalender(!calender)} className="flex relative flex-nowrap items-center justify-center rounded-2xl max-w-64 max-h-12 bg-white/70 font-semibold p-6 text-center space-y-12">
         {<div>
-          <span>{`${date.Day !== 0 ? `${date.Day} - ${date.Month} - ${date.Year}` : boxText}`}</span> <svg className="w-6 h-6 absolute right-2 bottom-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <span>{`${date.Day !== 0 ? `${t(date.Day)} - ${t(date.Month)} - ${t(date.Year)}` : (boxText)}`}</span> <svg className="w-6 h-6 absolute right-2 bottom-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
   <path d="M12 11.993a.75.75 0 0 0-.75.75v.006c0 .414.336.75.75.75h.006a.75.75 0 0 0 .75-.75v-.006a.75.75 0 0 0-.75-.75H12ZM12 16.494a.75.75 0 0 0-.75.75v.005c0 .414.335.75.75.75h.005a.75.75 0 0 0 .75-.75v-.005a.75.75 0 0 0-.75-.75H12ZM8.999 17.244a.75.75 0 0 1 .75-.75h.006a.75.75 0 0 1 .75.75v.006a.75.75 0 0 1-.75.75h-.006a.75.75 0 0 1-.75-.75v-.006ZM7.499 16.494a.75.75 0 0 0-.75.75v.005c0 .414.336.75.75.75h.005a.75.75 0 0 0 .75-.75v-.005a.75.75 0 0 0-.75-.75H7.5ZM13.499 14.997a.75.75 0 0 1 .75-.75h.006a.75.75 0 0 1 .75.75v.005a.75.75 0 0 1-.75.75h-.006a.75.75 0 0 1-.75-.75v-.005ZM14.25 16.494a.75.75 0 0 0-.75.75v.006c0 .414.335.75.75.75h.005a.75.75 0 0 0 .75-.75v-.006a.75.75 0 0 0-.75-.75h-.005ZM15.75 14.995a.75.75 0 0 1 .75-.75h.005a.75.75 0 0 1 .75.75v.006a.75.75 0 0 1-.75.75H16.5a.75.75 0 0 1-.75-.75v-.006ZM13.498 12.743a.75.75 0 0 1 .75-.75h2.25a.75.75 0 1 1 0 1.5h-2.25a.75.75 0 0 1-.75-.75ZM6.748 14.993a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1-.75-.75Z" />
   <path fill-rule="evenodd" d="M18 2.993a.75.75 0 0 0-1.5 0v1.5h-9V2.994a.75.75 0 1 0-1.5 0v1.497h-.752a3 3 0 0 0-3 3v11.252a3 3 0 0 0 3 3h13.5a3 3 0 0 0 3-3V7.492a3 3 0 0 0-3-3H18V2.993ZM3.748 18.743v-7.5a1.5 1.5 0 0 1 1.5-1.5h13.5a1.5 1.5 0 0 1 1.5 1.5v7.5a1.5 1.5 0 0 1-1.5 1.5h-13.5a1.5 1.5 0 0 1-1.5-1.5Z" clip-rule="evenodd" />
 </svg>
@@ -138,24 +142,26 @@ export default function Question(props){
           </div>
         }
         </div>
-         <button className='w-[96%]  bg-violet-500/20 rounded-xl p-4 text-white text-md font-bold shadow-xl' onClick={()=>{date.Day === 0 ? SetBox() : setQuestion("qualities")}}>Submit</button>
+         <button className='w-[96%]  bg-violet-500/20 rounded-xl p-4 text-white text-md font-bold shadow-xl' onClick={()=>{date.Day === 0 ? SetBox() : setQuestion("qualities")}}>{t("Submit")}</button>
       
       </div>
     }
     {
       question === "qualities" && 
       <>
-       <h2>Hope the baby gets : </h2>
-       <h1 className="my-2 text-center font-semibold">{boxText}</h1>
+       <h2>{t("Hope the baby gets : ")}</h2>
+       <h1 className="my-2 text-center font-semibold">{t(boxText)}</h1>
        <div className="flex flex-col w-full">
        <div id="qualities" className='flex w-full'>
         <div  className='flex-col w-1/2 mx-2'>
-       <h1  onClick={()=>{setMomsDropdown(!momsDropDown); setDadsDropdown(false); console.log("clicked")}}>Moms <span className="relative">▼</span></h1>
+       <h1  onClick={()=>{setMomsDropdown(!momsDropDown); setDadsDropdown(false); console.log("clicked")}}>{t("Moms ")} <span className="relative">▼</span></h1>
        <div  className='flex-col focus:outline-none relative'>
         <div className="flex flex-wrap gap-2 overflow-x-hidden overflow-y-auto h-40">{
            momsList.map((quality)=>{
             return(
-            <div onClick={()=>{setMomsList(prev=>prev.filter(x=>x!==quality));  setMomsDropdown(false); setDadsDropdown(false); setQualitiesList(prev =>[...prev, quality ])}} className={` px-4 max-h-12 flex p-2 m-1 bg-white/20 whitespace-nowrap backdrop-blur-lg backdrop-brightness-125 rounded-xl font-bold justify-between `}><span className="px-2">{quality}</span><span>x</span></div>
+            // "quality" itself stays English — used for state/backend.
+            // Only the visible text is translated via t(quality).
+            <div key={quality} onClick={()=>{setMomsList(prev=>prev.filter(x=>x!==quality));  setMomsDropdown(false); setDadsDropdown(false); setQualitiesList(prev =>[...prev, quality ])}} className={` px-4 max-h-12 flex p-2 m-1 bg-white/20 whitespace-nowrap backdrop-blur-lg backdrop-brightness-125 rounded-xl font-bold justify-between `}><span className="px-2">{t(quality)}</span><span>x</span></div>
             )
         })
             }</div>
@@ -165,7 +171,8 @@ export default function Question(props){
         {qualities.map(quality=>{
             
           return (
-            <li className='hover:scale-105 border-b border-gray-500/30 pb-3 text-center' onClick={()=>{console.log("Clicked a quality");setMomsList(prev=>[...prev,quality]); console.log(quality,"ts quality"); updateList(quality); }} >{quality}</li>
+            // onClick still pushes the raw English "quality" into momsList — data sent to backend stays English
+            <li key={quality} className='hover:scale-105 border-b border-gray-500/30 pb-3 text-center' onClick={()=>{console.log("Clicked a quality");setMomsList(prev=>[...prev,quality]); console.log(quality,"ts quality"); updateList(quality); }} >{t(quality)}</li>
           )
         })}
         </ul>}
@@ -173,12 +180,12 @@ export default function Question(props){
        </div>
        </div>
        <div className='flex flex-col w-1/2 items-end'>
-         <h1  onClick={()=>{setDadsDropdown(!dadsDropDown); setMomsDropdown(false); console.log("clicked")}}>Dads <span className="relative">▼</span></h1>
+         <h1  onClick={()=>{setDadsDropdown(!dadsDropDown); setMomsDropdown(false); console.log("clicked")}}>{t("Dads ")} <span className="relative">▼</span></h1>
        <div  className='focus:outline-none  relative'>
      <div className="flex flex-wrap gap-2  overflow-x-hidden overflow-y-auto h-40">{
            dadsList.map((quality)=>{
             return(
-            <div onClick={()=>{setDadsList(prev=>prev.filter(x=>x!==quality)); setDadsDropdown(false); setMomsDropdown(false);  setQualitiesList(prev =>[...prev, quality ])}} className={`px-4 max-h-12 flex p-2 m-1 bg-white/20 whitespace-nowrap backdrop-blur-lg backdrop-brightness-125 rounded-xl font-bold justify-between`}><span className="px-2">{quality}</span><span>x</span></div>
+            <div key={quality} onClick={()=>{setDadsList(prev=>prev.filter(x=>x!==quality)); setDadsDropdown(false); setMomsDropdown(false);  setQualitiesList(prev =>[...prev, quality ])}} className={`px-4 max-h-12 flex p-2 m-1 bg-white/20 whitespace-nowrap backdrop-blur-lg backdrop-brightness-125 rounded-xl font-bold justify-between`}><span className="px-2">{t(quality)}</span><span>x</span></div>
             )
         })
             }</div>
@@ -188,7 +195,7 @@ export default function Question(props){
         {qualities.map(quality=>{
             
           return (
-            <li className='over:scale-105 border-b border-gray-500/30 pb-3 text-center' onClick={()=>{console.log("Clicked a quality"); setDadsList(prev=>[...prev,quality]); updateList(quality); }} >{quality}</li>
+            <li key={quality} className='over:scale-105 border-b border-gray-500/30 pb-3 text-center' onClick={()=>{console.log("Clicked a quality"); setDadsList(prev=>[...prev,quality]); updateList(quality); }} >{t(quality)}</li>
           )
         })}
         </ul>}
@@ -196,7 +203,7 @@ export default function Question(props){
        </div>
        </div>
        </div>
-        <button className='w-[96%]  bg-violet-500/20 rounded-xl p-4 text-white text-md font-bold shadow-xl' onClick={()=>{(momsList.length <= 0 || dadsList.length <=0) ? SetBox() : setQuestion("relation")}}>Submit</button>
+        <button className='w-[96%]  bg-violet-500/20 rounded-xl p-4 text-white text-md font-bold shadow-xl' onClick={()=>{(momsList.length <= 0 || dadsList.length <=0) ? SetBox() : setQuestion("relation")}}>{t("Submit")}</button>
       
        </div>
       </>
@@ -204,9 +211,12 @@ export default function Question(props){
     { 
     question === "relation" &&
       <div className="lg:w-1/2 justify-center items-center flex flex-col space-y-8 md:w-[65%] w-[95%]">
-      <h3>What will the baby know you as?</h3>
-      <input type="text" placeholder={boxText.length > 0 ? boxText : "Relation"} className="text-center  w-[98%] p-4 rounded-xl focus:outline-none border-1 border-white/40"   onChange={(e)=>setRelation(e.target.value)}/>
-            <button className='w-[96%]  bg-violet-500/20 rounded-xl p-4 text-white text-md font-bold shadow-xl' onClick={()=>{relation.trim().length <= 0 ? SetBox() : submitAnswer(); }}>Submit</button>
+      <h3>{t("What will the baby know you as?")}</h3>
+      <form className="space-y-8" onSubmit={(e)=>{relation.trim().length <= 0 ? SetBox(e) : submitAnswer(e); }}> 
+      <input type="text" placeholder={boxText.length > 0 ? t(boxText) : t("Relation")} className="text-center  w-[98%] p-4 rounded-xl focus:outline-none border-1 border-white/40"   onChange={(e)=>setRelation(e.target.value)}/>
+            <button type="submit" className='w-[96%]  bg-violet-500/20 rounded-xl p-4 text-white text-md font-bold shadow-xl' >{t("Submit")}</button>
+      </form>
+      
       </div>
     }
 

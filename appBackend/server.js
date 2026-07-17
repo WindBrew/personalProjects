@@ -17,8 +17,8 @@ app.use(express.json())
 io.on("connection",(socket)=>{
     console.log("connected")
     socket.on("vote",async ()=>{
-         const countBoys = Number((await database.query("select count(*) from uservotes where vote = $1",['Boy'])).rows[0].count)
-        const countTotal = Number((await database.query("select count(*) from uservotes where vote is not null")).rows[0].count)
+         const countBoys = Number((await database.query("select count(*) from uservotes where vote = $1 and suggestion is not null",['Boy'])).rows[0].count)
+        const countTotal = Number((await database.query("select count(*) from uservotes where vote is not null and suggestion is not null")).rows[0].count)
         const countGirls = countTotal - countBoys
         console.log("listened to frontends vote")
         console.log("this is counting of boys and total", countBoys, countTotal)
@@ -68,7 +68,7 @@ app.post("/vote", async(req,res)=>{
 // })
 
 app.get("/userdata",async (req,res)=>{
-    const userdata = (await database.query("select * from uservotes where vote is not null")).rows
+    const userdata = (await database.query("select * from uservotes where suggestion is not null")).rows
     res.json({
         userdata
     })
@@ -80,7 +80,7 @@ app.delete("/userdata",async(req,res)=>{
     })
 })
 app.post("/verifyAdmin",async(req,res)=>{
-    if(req.body.pass === process.env.adminPass){
+    if((req.body.pass) === (process.env.adminPass)){
         res.json({
             message:"Welcome Admin",
         
@@ -88,7 +88,7 @@ app.post("/verifyAdmin",async(req,res)=>{
         })
     }
     else{
-        res.status(401).message("Not an admin")
+        res.status(401).json({message: "Not an admin"})
     }
 })
 app.patch("/addData", async (req,res)=>{
