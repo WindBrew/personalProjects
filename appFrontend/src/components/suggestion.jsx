@@ -35,8 +35,10 @@ export default function Suggestion(props){
             setPlaceholderText(data.message)
             setTimeout(()=>setPlaceholderText("Your suggestion here"),5000)
             console.log("data : ",data)
+            props.updateVotes()
             props.pageUpdate("score")
             props.loader(false)
+
      
         }
         else{

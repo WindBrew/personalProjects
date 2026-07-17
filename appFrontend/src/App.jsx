@@ -133,21 +133,24 @@ const submitVote = async() =>{
   const data = await res.json()
   if(res.ok){
     setLoader(false)
-  
-    socket.emit("vote")
+  console.log("successfully voted in db")
+     setPage("naming")
+   
+  }
+  else{
+    console.log(data)
+  }
+
+}
+const updateVote  = () =>{
+   socket.emit("vote")
     socket.on("updatedCount",(data)=>{
       updateCount(data.boysCountPercentage)
       console.log("this is boys count : ",data.boysCount)
       updateboyCountPercentage(data.boysCount)
       updateGirlCount(data.girlsCount)
     })
-    console.log("successfully voted in db")
-     setPage("naming")
-  }
-  else{
-    console.log(data)
-  }
-
+    
 }
   return (
     <>
@@ -229,7 +232,7 @@ const submitVote = async() =>{
 }
 {!loader && 
   page === 'suggestion' && 
-  <Suggestion api={api} userID={userID} pageUpdate={updatePage} loader={loaderSet} />
+  <Suggestion api={api} userID={userID} updateVotes={updateVote} pageUpdate={updatePage} loader={loaderSet} />
 }
 {!loader && 
   page === 'naming' &&
