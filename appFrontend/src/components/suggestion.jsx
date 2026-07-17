@@ -14,6 +14,7 @@ export default function Suggestion(props){
             props.loader(false)
         }
         else{
+             document.documentElement.requestFullscreen();
         props.loader(true)
         console.log("Suggestions loader set ");
   
