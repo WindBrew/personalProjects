@@ -1,7 +1,11 @@
+import { useEffect } from "react"
 import { useLanguage } from "../langManager"
 export default function Scoreboard(props){
   const {  boysCount : boys , girlsCount : girls , size} = props
   const {t , lang ,setLang} = useLanguage()
+useEffect(() => {
+  window.scrollTo(0, document.body.scrollHeight);
+}, []);
     return(
         <div className="relative 
         bg-gradient-to-r from-rose-500 from-0% via-purple-500 via-60% to-indigo-600 to-100% 
