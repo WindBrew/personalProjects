@@ -1,5 +1,5 @@
 .env
 node_modules/
-.py
-.png
+*.py
+*.png
 test.js
