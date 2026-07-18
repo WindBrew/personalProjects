@@ -12,7 +12,7 @@ const io = new Server(server,{
 })
 
 app.use(cors({origin:process.env.prodURL}))
-const database = new Pool({connectionString:process.env.databaseKey})
+const database = new Pool({connectionString:process.env.databaseKey , max: 150})
 app.use(express.json())
 io.on("connection",(socket)=>{
     console.log("connected")
@@ -29,7 +29,12 @@ io.on("connection",(socket)=>{
     })
 })
 app.get("/",(req,res)=>{
+    try{
     res.status(200).json({message: "server live"})
+    }
+    catch(err){
+        console.log("user failed to load ",err)
+    }
 })
 
 
